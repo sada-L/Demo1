@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
+        mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
 		WindowStartupLocation="CenterScreen"
         x:Class="Demo.MainWindow"
 		x:CompileBindings="False"
@@ -10,6 +10,7 @@
 	
 	<Grid RowDefinitions="auto,*,auto"
 		  ColumnDefinitions="*,*,*">
+		
 		<TextBox Grid.Row="0"
 				 Grid.Column="0"
 				 Margin="10"
@@ -31,11 +32,14 @@
 		<ComboBox Grid.Row="0"
 				  Grid.Column="2"
 				  Margin="10"
+				  SelectedIndex="0"
 				  HorizontalAlignment="Stretch"
-				  Name="SortBox">
+				  Name="SortBox"
+				  SelectionChanged="ComboBox_SelectionChanged">
 			<ComboBoxItem Content="Все"/>
-			<ComboBoxItem Content="Муж"/>
-			<ComboBoxItem Content="Жен"/>
+			<ComboBoxItem Content="По фамилии"/>
+			<ComboBoxItem Content="По дате визита"/>
+			<ComboBoxItem Content="По количеству заходов"/>
 		</ComboBox>
 
 		<ListBox Grid.Row="1"
@@ -50,7 +54,7 @@
 						BorderThickness="0 1 0 0"
 						BorderBrush="Black"
 						Padding="0 15 0 0">
-						<Grid ColumnDefinitions="0.5*,0.5*,1.5*,1.5*,2*,1.5*,2*,2.5*,2*,4*">
+						<Grid ColumnDefinitions="0.2*,0.2*,0.5*,0.5*,0.5*,0.5*,0.7*,0.7*,0.7*,0.7*,0.2*,1.5*">
 							<TextBlock VerticalAlignment="Center" Grid.Column="0" Text="{Binding Id}"/>
 							<TextBlock VerticalAlignment="Center" Grid.Column="1" Text="{Binding Gendercode}"/>
 							<TextBlock VerticalAlignment="Center" Grid.Column="2" Text="{Binding Firstname}"/>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Demo.Models;
 
@@ -25,9 +26,9 @@ public partial class Client
 
     public string? Photopath { get; set; }
 
-    public DateOnly? Dataofvisit { get; set; }
+    public DateOnly? Dateofvisit => Visits.Count != 0 ? Visits.Select(x => x.Starttime).Order().First() : null!;
 
-    public int? Countofvisit { get; set; }
+    public int? Countofvisit => Visits.Count;
 
     public virtual ICollection<Documentbyclient> Documentbyclients { get; set; } = new List<Documentbyclient>();
 

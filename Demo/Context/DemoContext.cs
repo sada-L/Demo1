@@ -29,7 +29,6 @@ public partial class DemoContext : DbContext
     public virtual DbSet<Visit> Visits { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=89.110.53.87;Port=5522;Database=demo;Username=postgres;password=QWEasd123");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,8 +43,6 @@ public partial class DemoContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
             entity.Property(e => e.Birthday).HasColumnName("birthday");
-            entity.Property(e => e.Countofvisit).HasColumnName("countofvisit");
-            entity.Property(e => e.Dataofvisit).HasColumnName("dataofvisit");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
@@ -176,9 +173,7 @@ public partial class DemoContext : DbContext
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
             entity.Property(e => e.Clientid).HasColumnName("clientid");
-            entity.Property(e => e.Starttime)
-                .HasColumnType("timestamp(3) without time zone")
-                .HasColumnName("starttime");
+            entity.Property(e => e.Starttime).HasColumnName("starttime");
 
             entity.HasOne(d => d.Client).WithMany(p => p.Visits)
                 .HasForeignKey(d => d.Clientid)

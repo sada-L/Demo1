@@ -9,7 +9,7 @@ public partial class Visit
 
     public int Clientid { get; set; }
 
-    public DateTime Starttime { get; set; }
+    public DateOnly Starttime { get; set; }
 
     public virtual Client Client { get; set; } = null!;
 }

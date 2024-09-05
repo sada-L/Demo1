@@ -1,11 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Media;
 using Demo.Context;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Demo
 {
@@ -22,7 +18,10 @@ namespace Demo
         {
             if (FilterBox == null) return;
 
-            var list = Helper.Database.Clients.Include(x => x.Tags).ToList();
+            var list = Helper.Database.Clients
+                .Include(x => x.Tags)
+                .Include(x => x.Visits)
+                .ToList();
 
             list = FilterBox.SelectedIndex switch
             {
@@ -33,9 +32,9 @@ namespace Demo
 
             list = SortBox.SelectedIndex switch
             {
-                1 => list.OrderBy(x => x.Lastname).ToList(),
-                2 => list.OrderBy(x => x.Dataofvisit).ToList(),
-                3 => list.OrderBy(x => x.Countofvisit).ToList(),
+                1 => list.OrderBy(x => x.Firstname).ToList(),
+                2 => list.OrderBy(x => x.Dateofvisit).ToList(),
+                3 => list.OrderByDescending(x => x.Countofvisit).ToList(),
                 _ => list
             };
 
