@@ -1,0 +1,101 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="600"
+		WindowStartupLocation="CenterScreen"
+        x:Class="Demo.MainWindow"
+		x:CompileBindings="False"
+        Title="Demo">
+	
+	<Grid RowDefinitions="auto,*,auto"
+		  ColumnDefinitions="*,*,*">
+		<TextBox Grid.Row="0"
+				 Grid.Column="0"
+				 Margin="10"
+				 Watermark="Поиск"
+				 Name="SearchBox"/>
+		
+		<ComboBox Grid.Row="0"
+				  Grid.Column="1"
+				  Margin="10"
+				  HorizontalAlignment="Stretch"
+				  SelectedIndex="0"
+				  Name="FilterBox"
+				  SelectionChanged="ComboBox_SelectionChanged">
+			<ComboBoxItem Content="Все"/>
+			<ComboBoxItem Content="Муж"/>
+			<ComboBoxItem Content="Жен"/>
+		</ComboBox>
+
+		<ComboBox Grid.Row="0"
+				  Grid.Column="2"
+				  Margin="10"
+				  HorizontalAlignment="Stretch"
+				  Name="SortBox">
+			<ComboBoxItem Content="Все"/>
+			<ComboBoxItem Content="Муж"/>
+			<ComboBoxItem Content="Жен"/>
+		</ComboBox>
+
+		<ListBox Grid.Row="1"
+				 Grid.Column="0"
+				 Grid.ColumnSpan="3"
+				 Margin="10 0 10 0"
+				 Name="ClientListBox">
+
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Border 
+						BorderThickness="0 1 0 0"
+						BorderBrush="Black"
+						Padding="0 15 0 0">
+						<Grid ColumnDefinitions="0.5*,0.5*,1.5*,1.5*,2*,1.5*,2*,2.5*,2*,4*">
+							<TextBlock VerticalAlignment="Center" Grid.Column="0" Text="{Binding Id}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="1" Text="{Binding Gendercode}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="2" Text="{Binding Firstname}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="3" Text="{Binding Lastname}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="4" Text="{Binding Patronymic}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="5" Text="{Binding Birthday}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="6" Text="{Binding Phone}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="7" Text="{Binding Email}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="8" Text="{Binding Registrationdate}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="9" Text="{Binding Dateofvisit}"/>
+							<TextBlock VerticalAlignment="Center" Grid.Column="10" Text="{Binding Countofvisit}"/>
+							
+							<ItemsControl VerticalAlignment="Center" Grid.Column="11" Margin="10 0 10 0" ItemsSource="{Binding Tags}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<WrapPanel/>
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Border Margin="5"
+												Padding="5"
+												CornerRadius="20"
+												Background="{Binding TagColor}">
+											<TextBlock Foreground="White" Text="{Binding Title}"/>
+										</Border>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</Grid>
+					</Border>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<Button Grid.Row="2"
+				Grid.Column="2"
+				Margin="10"
+				HorizontalAlignment="Right"
+				Content="Следующая страница"/>
+		
+		<Button Grid.Row="2"
+				Grid.Column="0"
+				Margin="10"
+				Content="Предыдущая страница"/>
+	</Grid>
+</Window>
