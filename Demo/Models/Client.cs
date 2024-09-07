@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Avalonia.Media.Imaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Demo.Models;
 
@@ -25,6 +27,8 @@ public partial class Client
     public char Gendercode { get; set; }
 
     public string? Photopath { get; set; }
+
+    public Bitmap? ClientImage => Photopath != null ? new Bitmap(AppDomain.CurrentDomain.BaseDirectory + $"Assets/" + Photopath) : null;
 
     public DateOnly? Dateofvisit => Visits.Count != 0 ? Visits.Select(x => x.Starttime).Order().First() : null!;
 
