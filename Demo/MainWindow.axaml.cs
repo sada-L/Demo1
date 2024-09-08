@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Demo.Context;
 using Demo.Models;
+using HarfBuzzSharp;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,17 @@ namespace Demo
     public partial class MainWindow : Window
     {
         private int ItemsPerPage = 10;
-
         private List<Client> AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
         private List<Client> DisplayedClient = new List<Client>();
         private int CurrentPage;
         private int TotalPages => (AllClient.Count + ItemsPerPage - 1) / ItemsPerPage;
-
 
         public MainWindow()
         {
             InitializeComponent();
 
             CurrentPage = 1;
+
             InitList();
         }
 
@@ -40,8 +40,8 @@ namespace Demo
 
             list = FilterBox.SelectedIndex switch
             {
-                1 => list.Where(x => x.Gendercode == 'ж').ToList(),
-                2 => list.Where(x => x.Gendercode == 'м').ToList(),
+                1 => list.Where(x => x.Gendercode == 'м').ToList(),
+                2 => list.Where(x => x.Gendercode == 'ж').ToList(),
                 _ => list
             };
 
@@ -71,18 +71,29 @@ namespace Demo
         {
             DisplayedClient.Clear();
 
+            ItemsPerPage = PageComboBox.SelectedIndex switch
+            {
+                0 => 10,
+                1 => 50,
+                2 => 200,
+                4 => list.Count,
+                _ => 10
+            };
+
             foreach (var product in list.Skip((CurrentPage - 1) * ItemsPerPage).Take(ItemsPerPage))
             {
                 DisplayedClient.Add(product);
             }
 
+            CurrentCountTextBlock.Text = list.Count.ToString();
+            AllCountTextBlock.Text = AllClient.Count.ToString();
             ClientListBox.ItemsSource = null;
             ClientListBox.ItemsSource = DisplayedClient;
         }
 
         private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e) => InitList();
 
-        private void TextBox_TextChanged(object? sender, Avalonia.Controls.TextChangedEventArgs e) => InitList();
+        private void TextBox_TextChanged(object? sender, TextChangedEventArgs e) => InitList();
 
         private void Button_Click_Next(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
@@ -103,5 +114,44 @@ namespace Demo
         }
 
         private void CheckBox_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => InitList();
+
+        private void Button_Click_Edit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Button_Click_Delete(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            int id = (int)(sender as Button)?.Tag!;
+
+            var client = Helper.Database.Clients.Find(id);
+
+            if (client != null)
+            {
+                if (client.Visits.Count <= 0)
+                {
+                    List<Models.Tag> tags = client.Tags.ToList();
+
+                    for (int i = 0; i < tags.Count;)
+                    {
+                        Helper.Database.Tags.Remove(tags[i]);
+                        Helper.Database.SaveChanges();
+                    }
+
+                    Helper.Database.Clients.Remove(client);
+                    Helper.Database.SaveChanges();
+                }
+                else
+                {
+                    ErrorTextBlock.Text = "Ќельз€ удалить клиетов с посещени€ми";
+                }
+            }
+            else
+            {
+                ErrorTextBlock.Text = "Error";
+            }
+            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
+            InitList();
+        }
     }
 }
