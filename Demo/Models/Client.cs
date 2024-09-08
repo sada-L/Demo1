@@ -1,6 +1,8 @@
 ﻿using Avalonia.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Demo.Models;
@@ -9,19 +11,23 @@ public partial class Client
 {
     public int Id { get; set; }
 
+    [RegularExpression(@"^[а-яА-Я\s-]{1,50}$", ErrorMessage = "Фамилия может содержать только буковы.")]
     public string Firstname { get; set; } = null!;
 
+    [RegularExpression(@"^[а-яА-Я\s-]{1,50}$", ErrorMessage = "Имя может содержать только буковы.")]
     public string Lastname { get; set; } = null!;
 
+    [RegularExpression(@"^[а-яА-Я\s-]{1,50}$", ErrorMessage = "Отчество может содержать только буковы.")]
     public string? Patronymic { get; set; }
 
     public DateOnly? Birthday { get; set; }
 
     public DateTime Registrationdate { get; set; }
 
+    [RegularExpression(@"^[\w\.]+@[\w\.]+$", ErrorMessage = "Неверный формат почты")]
     public string? Email { get; set; }
 
-    public string Phone { get; set; } = null!;
+    [Phone] public string Phone { get; set; } = null!;
 
     public char Gendercode { get; set; }
 

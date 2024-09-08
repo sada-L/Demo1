@@ -117,7 +117,12 @@ namespace Demo
 
         private void Button_Click_Edit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            
+            var id = (int)(sender as Button)?.Tag!;
+
+            var client = Helper.Database.Clients.Find(id);
+
+            ClientForm clientForm = new ClientForm(client!);
+            clientForm.ShowDialog(this);
         }
 
         private void Button_Click_Delete(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -132,7 +137,7 @@ namespace Demo
                 {
                     List<Models.Tag> tags = client.Tags.ToList();
 
-                    for (int i = 0; i < tags.Count;)
+                    for (int i = 0; i < tags.Count; i++)
                     {
                         Helper.Database.Tags.Remove(tags[i]);
                         Helper.Database.SaveChanges();
@@ -152,6 +157,12 @@ namespace Demo
             }
             AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
             InitList();
+        }
+
+        private void Button_Click_Add(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            ClientForm clientForm = new ClientForm();
+            clientForm.ShowDialog(this);
         }
     }
 }

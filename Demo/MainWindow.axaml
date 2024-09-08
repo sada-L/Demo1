@@ -165,5 +165,12 @@
 				Margin="10"
 				Content="Предыдущая страница"
 				Click="Button_Click_Back"/>
+
+		<Button Grid.Row="2"
+				Grid.Column="0"
+				Margin="10"
+				Content="Добавить"
+				HorizontalAlignment="Right"
+				Click="Button_Click_Add"/>
 	</Grid>
 </Window>
