@@ -123,6 +123,9 @@ namespace Demo
 
             ClientForm clientForm = new ClientForm(client!);
             clientForm.ShowDialog(this);
+
+            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
+            InitList();
         }
 
         private void Button_Click_Delete(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -163,6 +166,9 @@ namespace Demo
         {
             ClientForm clientForm = new ClientForm();
             clientForm.ShowDialog(this);
+
+            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
+            InitList();
         }
     }
 }

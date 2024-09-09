@@ -9,11 +9,11 @@
 	<Grid ColumnDefinitions="*,*" DataContext="{Binding CurrentClient}" Margin="10" Name="MainGrid">
 		<StackPanel Grid.Row="0" Spacing="10">
 			<TextBlock Text="{Binding Id, StringFormat='ID: {0}'}" Name="IdBlock"/>
-			<TextBox Watermark="Фамилия" Text="{Binding Firstname}"/>
-			<TextBox Watermark="Имя" Text="{Binding Lastname}"/>
-			<TextBox Watermark="Отчество" Text="{Binding Patronymic}"/>
-			<TextBox Watermark="Почта" Text="{Binding Email}"/>
-			<TextBox Watermark="Телефон" Text="{Binding Phone}"/>
+			<TextBox Watermark="Фамилия" Text="{Binding Firstname}" Name="FNBlock"/>
+			<TextBox Watermark="Имя" Text="{Binding Lastname}" Name="LNBlock"/>
+			<TextBox Watermark="Отчество" Text="{Binding Patronymic}" Name="PNBlock"/>
+			<TextBox Watermark="Почта" Text="{Binding Email}" Name="EBlock"/>
+			<TextBox Watermark="Телефон" Text="{Binding Phone}" Name="PBlock"/>
 			
 			<ToggleSwitch Name="GenderToggle">
 				<ToggleSwitch.OffContent>
@@ -23,11 +23,23 @@
 					Жен
 				</ToggleSwitch.OnContent>
 			</ToggleSwitch>
+			
+			<Button Content="Добавить фото" Click="Button_Click_AddPhoto"/>
+			
+			<Image Source="{Binding ClientImage}" 
+				   Name="ImageClient" 
+				   Height="200" 
+				   Width="200" 
+				   HorizontalAlignment="Left"/>
 		</StackPanel>
 		
-		<Calendar Grid.Column="1" 
-				  HorizontalAlignment="Right" 
-				  VerticalAlignment="Top"
-				  Name="DateCalendar"/>
+		<StackPanel Grid.Column="1"
+					HorizontalAlignment="Right"
+				    VerticalAlignment="Top"
+					Spacing="10">
+			<Calendar Name="DateCalendar"/>
+			
+			<Button Content="Сохранить" Click="Button_Click_Save"/>
+		</StackPanel>
 	</Grid>
 </Window>

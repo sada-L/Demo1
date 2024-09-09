@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 
 namespace Demo.Models;
@@ -33,7 +34,9 @@ public partial class Client
 
     public string? Photopath { get; set; }
 
-    public Bitmap? ClientImage => !string.IsNullOrEmpty(Photopath) ? new Bitmap(AppDomain.CurrentDomain.BaseDirectory + $"Assets/" + Photopath) : null;
+    public Bitmap? ClientImage => File.Exists(AppDomain.CurrentDomain.BaseDirectory + $"Assets/" + Photopath)
+        ? new Bitmap(AppDomain.CurrentDomain.BaseDirectory + $"Assets/" + Photopath)
+        : null;
 
     public DateOnly? Dateofvisit => Visits.Count != 0 ? Visits.Select(x => x.Starttime).Order().First() : null!;
 
