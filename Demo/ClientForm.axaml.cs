@@ -2,10 +2,12 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Demo.Context;
 using Demo.Models;
+using HarfBuzzSharp;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Demo;
@@ -95,7 +97,10 @@ public partial class ClientForm : Window
             Helper.Database.Clients.Update(Client!);
             Helper.Database.SaveChanges();
         }
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.Show();
         Close();
+
     }
 
     private void Button_Click_AddTag(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -106,7 +111,7 @@ public partial class ClientForm : Window
 
             var title = text[0];
             var color = text[1];
-            var tag = new Tag
+            var tag = new Models.Tag
             {
                 Title = title,
                 Color = color,
@@ -125,10 +130,21 @@ public partial class ClientForm : Window
 
         var tag = Helper.Database.Tags.Find(id);
 
-        Helper.Database.Tags.Remove(tag!);
-        Helper.Database.SaveChanges();
-
-        Client.Tags.Remove(tag);
+        if (tag == null) 
+        {
+            Client.Tags.Clear();
+            TagListBox.SelectedItem = null;
+            TagListBox.ItemsSource = null;
+            ClientForm clientForm = new ClientForm(Client);
+            clientForm.Show();
+            Close();
+        }
+        else
+        {
+            Client.Tags.Remove(tag!);
+            Helper.Database.Tags.Remove(tag!);
+            Helper.Database.SaveChanges();
+        }
 
         TagListBox.ItemsSource = null;
         TagListBox.ItemsSource = Client.Tags;

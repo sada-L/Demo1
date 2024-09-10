@@ -40,8 +40,8 @@ namespace Demo
 
             list = FilterBox.SelectedIndex switch
             {
-                1 => list.Where(x => x.Gendercode == '�').ToList(),
-                2 => list.Where(x => x.Gendercode == '�').ToList(),
+                1 => list.Where(x => x.Gendercode == 'м').ToList(),
+                2 => list.Where(x => x.Gendercode == 'ж').ToList(),
                 _ => list
             };
 
@@ -165,9 +165,11 @@ namespace Demo
             var client = Helper.Database.Clients.Find(id);
 
             ClientForm clientForm = new ClientForm(client!);
-            clientForm.ShowDialog(this);
+            clientForm.Show();
+            Close();
 
             AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
+
             InitList();
         }
     }
