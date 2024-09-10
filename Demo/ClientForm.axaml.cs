@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media.Imaging;
 using Demo.Context;
 using Demo.Models;
@@ -9,6 +11,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Tag = Demo.Models.Tag;
 
 namespace Demo;
 
@@ -111,7 +114,7 @@ public partial class ClientForm : Window
 
             var title = text[0];
             var color = text[1];
-            var tag = new Models.Tag
+            var tag = new Tag
             {
                 Title = title,
                 Color = color,
@@ -126,24 +129,13 @@ public partial class ClientForm : Window
 
     private void Button_Click_DeleteTag(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var id = (int)(sender as Button)!.Tag!;
-
-        var tag = Helper.Database.Tags.Find(id);
-
-        if (tag == null) 
+        if (TagListBox.SelectedItem != null)
         {
-            Client.Tags.Clear();
-            TagListBox.SelectedItem = null;
-            TagListBox.ItemsSource = null;
-            ClientForm clientForm = new ClientForm(Client);
-            clientForm.Show();
-            Close();
-        }
-        else
-        {
-            Client.Tags.Remove(tag!);
+            var tag = TagListBox.SelectedItem as Tag;
+           
             Helper.Database.Tags.Remove(tag!);
             Helper.Database.SaveChanges();
+            Client.Tags.Remove(tag!);
         }
 
         TagListBox.ItemsSource = null;

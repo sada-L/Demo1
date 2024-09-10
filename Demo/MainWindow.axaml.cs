@@ -115,6 +115,16 @@ namespace Demo
 
         private void CheckBox_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => InitList();
 
+        private void Button_Click_Edit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            var id = (int)(sender as Button)?.Tag!;
+
+            var client = Helper.Database.Clients.Find(id);
+
+            ClientForm clientForm = new ClientForm(client!);
+            clientForm.ShowDialog(this);
+        }
+
         private void Button_Click_Delete(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             int id = (int)(sender as Button)?.Tag!;
@@ -138,7 +148,7 @@ namespace Demo
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "������ ������� ������� � �����������";
+                    ErrorTextBlock.Text = "Нельзя удалить клиетов с посещениями";
                 }
             }
             else
@@ -153,24 +163,15 @@ namespace Demo
         {
             ClientForm clientForm = new ClientForm();
             clientForm.ShowDialog(this);
-
-            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
-            InitList();
         }
 
-        private void Button_Click_Edit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void Button_Click_History(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            var id = (int)(sender as Button)?.Tag!;
-
-            var client = Helper.Database.Clients.Find(id);
-
-            ClientForm clientForm = new ClientForm(client!);
-            clientForm.Show();
-            Close();
-
-            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
-
-            InitList();
+            if(ClientListBox.SelectedItem != null)
+            {
+                HistoryWindow historyWindow = new HistoryWindow((ClientListBox.SelectedItem as Client)!);
+                historyWindow.ShowDialog(this);
+            }
         }
     }
 }

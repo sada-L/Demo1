@@ -159,6 +159,13 @@
 				HorizontalAlignment="Right"
 				Content="Следующая страница"
 				Click="Button_Click_Next"/>
+
+		<Button Grid.Row="2"
+				Grid.Column="2"
+				Margin="10"
+				HorizontalAlignment="Left"
+				Content="История"
+				Click="Button_Click_History"/>
 		
 		<Button Grid.Row="2"
 				Grid.Column="0"

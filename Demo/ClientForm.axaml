@@ -6,7 +6,7 @@
         x:Class="Demo.ClientForm"
 		x:CompileBindings="False"
         Title="ClientForm">
-	<Grid ColumnDefinitions="*,*" DataContext="{Binding CurrentClient}" Margin="10" Name="MainGrid">
+	<Grid ColumnDefinitions="*,*" Margin="10" Name="MainGrid">
 		<StackPanel Grid.Row="0" Spacing="10">
 			<TextBlock Text="{Binding Id, StringFormat='ID: {0}'}" Name="IdBlock"/>
 			<TextBox Watermark="Фамилия" Text="{Binding Firstname}" Name="FNBlock"/>
@@ -42,17 +42,18 @@
 			<ListBox ItemsSource="{Binding Tags}" Name="TagListBox" Height="150">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<DockPanel>
-							<Button Content="Удалить" DockPanel.Dock="Right" Click="Button_Click_DeleteTag" Tag="{Binding Id}"/>
-							<TextBlock Foreground="{Binding TagColor}" Text="{Binding Title}"/>
-						</DockPanel>
+						<TextBlock Foreground="{Binding TagColor}" Text="{Binding Title}"/>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
 			
 			<TextBox Watermark="Имя, Цвет(ff00ff)" Name="TagTextBox"/>
+
+			<StackPanel Orientation="Horizontal" Spacing="10">
+				<Button Content="Добавить тег" Click="Button_Click_AddTag"/>
+				<Button Content="Удалить Тег"  Click="Button_Click_DeleteTag"/>
+			</StackPanel>
 			
-			<Button Content="Добавить тег" Click="Button_Click_AddTag"/>
 			<Button Content="Сохранить" Click="Button_Click_Save"/>
 		</StackPanel>
 	</Grid>
