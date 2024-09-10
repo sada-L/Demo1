@@ -40,8 +40,8 @@ namespace Demo
 
             list = FilterBox.SelectedIndex switch
             {
-                1 => list.Where(x => x.Gendercode == 'м').ToList(),
-                2 => list.Where(x => x.Gendercode == 'ж').ToList(),
+                1 => list.Where(x => x.Gendercode == 'пїЅ').ToList(),
+                2 => list.Where(x => x.Gendercode == 'пїЅ').ToList(),
                 _ => list
             };
 
@@ -115,19 +115,6 @@ namespace Demo
 
         private void CheckBox_Checked(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => InitList();
 
-        private void Button_Click_Edit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-        {
-            var id = (int)(sender as Button)?.Tag!;
-
-            var client = Helper.Database.Clients.Find(id);
-
-            ClientForm clientForm = new ClientForm(client!);
-            clientForm.ShowDialog(this);
-
-            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
-            InitList();
-        }
-
         private void Button_Click_Delete(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             int id = (int)(sender as Button)?.Tag!;
@@ -151,7 +138,7 @@ namespace Demo
                 }
                 else
                 {
-                    ErrorTextBlock.Text = "Нельзя удалить клиетов с посещениями";
+                    ErrorTextBlock.Text = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
                 }
             }
             else
@@ -165,6 +152,19 @@ namespace Demo
         private void Button_Click_Add(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             ClientForm clientForm = new ClientForm();
+            clientForm.ShowDialog(this);
+
+            AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();
+            InitList();
+        }
+
+        private void Button_Click_Edit(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            var id = (int)(sender as Button)?.Tag!;
+
+            var client = Helper.Database.Clients.Find(id);
+
+            ClientForm clientForm = new ClientForm(client!);
             clientForm.ShowDialog(this);
 
             AllClient = Helper.Database.Clients.Include(x => x.Tags).Include(x => x.Visits).ToList();

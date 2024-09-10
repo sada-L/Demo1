@@ -90,9 +90,47 @@ public partial class ClientForm : Window
         }
         else
         {
+            Client.Birthday = DateOnly.FromDateTime(DateCalendar.SelectedDate!.Value);
+            Client.Gendercode = GenderToggle.IsChecked == true ? 'æ' : 'ì';
             Helper.Database.Clients.Update(Client!);
             Helper.Database.SaveChanges();
         }
         Close();
+    }
+
+    private void Button_Click_AddTag(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(TagTextBox.Text))
+        {
+            string[] text = TagTextBox.Text!.Split(", ");
+
+            var title = text[0];
+            var color = text[1];
+            var tag = new Tag
+            {
+                Title = title,
+                Color = color,
+            };
+            Helper.Database.Tags.Add(tag);
+            Helper.Database.SaveChanges();
+            Client.Tags.Add(tag);
+        }
+        TagListBox.ItemsSource = null;
+        TagListBox.ItemsSource = Client.Tags;
+    }
+
+    private void Button_Click_DeleteTag(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var id = (int)(sender as Button)!.Tag!;
+
+        var tag = Helper.Database.Tags.Find(id);
+
+        Helper.Database.Tags.Remove(tag!);
+        Helper.Database.SaveChanges();
+
+        Client.Tags.Remove(tag);
+
+        TagListBox.ItemsSource = null;
+        TagListBox.ItemsSource = Client.Tags;
     }
 }

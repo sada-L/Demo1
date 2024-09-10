@@ -12,13 +12,13 @@ public partial class Client
 {
     public int Id { get; set; }
 
-    [RegularExpression(@"^[а-яА-Я\s-]{1,50}$", ErrorMessage = "Фамилия может содержать только буковы.")]
+    [RegularExpression(@"^[а-яА-Яa-zA-Z\s-]{1,50}$", ErrorMessage = "Фамилия может содержать только буковы.")]
     public string Firstname { get; set; } = null!;
 
-    [RegularExpression(@"^[а-яА-Я\s-]{1,50}$", ErrorMessage = "Имя может содержать только буковы.")]
+    [RegularExpression(@"^[а-яА-Яa-zA-Z\s-]{1,50}$", ErrorMessage = "Имя может содержать только буковы.")]
     public string Lastname { get; set; } = null!;
 
-    [RegularExpression(@"^[а-яА-Я\s-]{1,50}$", ErrorMessage = "Отчество может содержать только буковы.")]
+    [RegularExpression(@"^[а-яА-Яa-zA-Z\s-]{1,50}$", ErrorMessage = "Отчество может содержать только буковы.")]
     public string? Patronymic { get; set; }
 
     public DateOnly? Birthday { get; set; }
