@@ -9,5 +9,5 @@ public partial class Document
 
     public string Documentpath { get; set; } = null!;
 
-    public virtual ICollection<Documentbyclient> Documentbyclients { get; set; } = new List<Documentbyclient>();
+    public virtual ICollection<Visit> Visits { get; set; } = new List<Visit>();
 }

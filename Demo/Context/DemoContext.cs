@@ -20,8 +20,6 @@ public partial class DemoContext : DbContext
 
     public virtual DbSet<Document> Documents { get; set; }
 
-    public virtual DbSet<Documentbyclient> Documentbyclients { get; set; }
-
     public virtual DbSet<Gender> Genders { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -107,29 +105,6 @@ public partial class DemoContext : DbContext
                 .HasColumnName("documentpath");
         });
 
-        modelBuilder.Entity<Documentbyclient>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("documentbyclient_pk");
-
-            entity.ToTable("documentbyclient");
-
-            entity.Property(e => e.Id)
-                .UseIdentityAlwaysColumn()
-                .HasColumnName("id");
-            entity.Property(e => e.Clientid).HasColumnName("clientid");
-            entity.Property(e => e.Documentid).HasColumnName("documentid");
-
-            entity.HasOne(d => d.Client).WithMany(p => p.Documentbyclients)
-                .HasForeignKey(d => d.Clientid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("documentbyclient_fk");
-
-            entity.HasOne(d => d.Document).WithMany(p => p.Documentbyclients)
-                .HasForeignKey(d => d.Documentid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("documentbyclient_fk_1");
-        });
-
         modelBuilder.Entity<Gender>(entity =>
         {
             entity.HasKey(e => e.Code).HasName("pk_gender");
@@ -179,6 +154,25 @@ public partial class DemoContext : DbContext
                 .HasForeignKey(d => d.Clientid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_clientservice_client");
+
+            entity.HasMany(d => d.Documents).WithMany(p => p.Visits)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Documentbyvisit",
+                    r => r.HasOne<Document>().WithMany()
+                        .HasForeignKey("Documentid")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("documentbyclient_fk_1"),
+                    l => l.HasOne<Visit>().WithMany()
+                        .HasForeignKey("Visitid")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("documentbyclient_fk"),
+                    j =>
+                    {
+                        j.HasKey("Visitid", "Documentid").HasName("documentbyvisit_pk");
+                        j.ToTable("documentbyvisit");
+                        j.IndexerProperty<int>("Visitid").HasColumnName("visitid");
+                        j.IndexerProperty<int>("Documentid").HasColumnName("documentid");
+                    });
         });
 
         OnModelCreatingPartial(modelBuilder);

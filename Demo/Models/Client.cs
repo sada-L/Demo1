@@ -42,8 +42,6 @@ public partial class Client
 
     public int? Countofvisit => Visits.Count;
 
-    public virtual ICollection<Documentbyclient> Documentbyclients { get; set; } = new List<Documentbyclient>();
-
     public virtual Gender GendercodeNavigation { get; set; } = null!;
 
     public virtual ICollection<Visit> Visits { get; set; } = new List<Visit>();
