@@ -21,7 +21,8 @@
 		<DockPanel Grid.Row="0"
 				   Grid.Column="1">
 			<CheckBox Content="Скоро День Р." 
-					  Checked="CheckBox_Checked" 
+					  Checked="CheckBox_Checked"
+					  Unchecked="CheckBox_Checked"
 					  Name="CheckBoxSort"/>
 
 			<ComboBox 

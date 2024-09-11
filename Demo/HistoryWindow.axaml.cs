@@ -26,8 +26,12 @@ public partial class HistoryWindow : Window
         ListBox.ItemsSource = visits;
     }
 
-    /*private void Button_Click_Open(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void Button_Click_Open(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        visits[visits.IndexOf(visits.Find(x => x.Id == (int)(sender as Button)!.Tag!)!)].IsOpen = true;
-    }*/
+        var id = (int)(sender as Button)!.Tag!;
+        var visit = visits.Find(x => x.Id == id);
+
+        DocumentWindow documentWindow = new DocumentWindow(visit!);
+        documentWindow.ShowDialog(this);
+    }
 }

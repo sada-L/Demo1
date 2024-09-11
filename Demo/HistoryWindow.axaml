@@ -11,20 +11,13 @@
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Border BorderBrush="Black" BorderThickness="1" Padding="10">
-						<StackPanel>
+						<DockPanel>
+							<Button Content=">" Click="Button_Click_Open" Tag="{Binding Id}" DockPanel.Dock="Right"/>
 							<StackPanel Spacing="5">
 								<TextBlock Text="{Binding Starttime}"/>
 								<TextBlock Text="{Binding Countofdocs, StringFormat='всего файлов: {0}' }"/>
 							</StackPanel>
-
-							<ListBox ItemsSource="{Binding Documents}">
-								<ListBox.ItemTemplate>
-									<DataTemplate>
-										<TextBlock Text="{Binding Documentpath}"/>
-									</DataTemplate>
-								</ListBox.ItemTemplate>
-							</ListBox>
-						</StackPanel>
+						</DockPanel>
 					</Border>
 				</DataTemplate>
 			</ListBox.ItemTemplate>

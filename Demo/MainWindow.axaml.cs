@@ -32,28 +32,16 @@ namespace Demo
 
             var list = AllClient.ToList();
 
-            if (CheckBoxSort.IsChecked ?? false) 
+            var isChecked = CheckBoxSort.IsChecked ?? false;
+
+            if (isChecked) 
             {
                 list = list.Where(x => x.Birthday!.Value.Month == DateTime.Now.Month).ToList();
-            }
 
-
-            list = FilterBox.SelectedIndex switch
-            {
-                1 => list.Where(x => x.Gendercode == 'м').ToList(),
-                2 => list.Where(x => x.Gendercode == 'ж').ToList(),
-                _ => list
-            };
-
-            if (!string.IsNullOrEmpty(SearchBox.Text))
-            {
-                list = list.Where(x =>
-                    x.Lastname.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Firstname.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Patronymic!.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Email!.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Phone.ToLower().Contains(SearchBox.Text.ToLower()))
-                    .ToList();
+                if (list.Count == 0)
+                {
+                    ClientListBox.ItemsSource = null;
+                }
             }
 
             list = SortBox.SelectedIndex switch
@@ -63,6 +51,38 @@ namespace Demo
                 3 => list.OrderByDescending(x => x.Countofvisit).ToList(),
                 _ => list
             };
+
+           
+            list = FilterBox.SelectedIndex switch
+            {
+                1 => list.Where(x => x.Gendercode == 'м').ToList(),
+                2 => list.Where(x => x.Gendercode == 'ж').ToList(),
+                _ => list
+            };
+
+
+            var temp = list;
+
+            if (!string.IsNullOrEmpty(SearchBox.Text))
+            {
+                var search = SearchBox.Text.Split();
+                list = list.Where(x =>
+                    x.Lastname.ToLower().Contains(SearchBox.Text.ToLower()) ||
+                    x.Firstname.ToLower().Contains(SearchBox.Text.ToLower()) ||
+                    x.Patronymic!.ToLower().Contains(SearchBox.Text.ToLower()) ||
+                    x.Email!.ToLower().Contains(SearchBox.Text.ToLower()) ||
+                    x.Phone.ToLower().Contains(SearchBox.Text.ToLower()))
+                    .ToList();
+
+                if (list.Count == 0)
+                {
+                    ClientListBox.ItemsSource = null;
+                }
+            }
+            else
+            {
+                list = temp;
+            }
 
             UpdateDisplayedClient(list);
         }
@@ -91,7 +111,12 @@ namespace Demo
             ClientListBox.ItemsSource = DisplayedClient;
         }
 
-        private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e) => InitList();
+        private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            CurrentPage = 1;
+
+            InitList();
+        }
 
         private void TextBox_TextChanged(object? sender, TextChangedEventArgs e) => InitList();
 
@@ -122,7 +147,8 @@ namespace Demo
             var client = Helper.Database.Clients.Find(id);
 
             ClientForm clientForm = new ClientForm(client!);
-            clientForm.ShowDialog(this);
+            clientForm.Show();
+            Close();
         }
 
         private void Button_Click_Delete(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -162,7 +188,8 @@ namespace Demo
         private void Button_Click_Add(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             ClientForm clientForm = new ClientForm();
-            clientForm.ShowDialog(this);
+            clientForm.Show();
+            Close();
         }
 
         private void Button_Click_History(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
