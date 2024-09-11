@@ -60,28 +60,34 @@ namespace Demo
                 _ => list
             };
 
-
-            var temp = list;
-
-            if (!string.IsNullOrEmpty(SearchBox.Text))
+            if(!string.IsNullOrEmpty(SearchBox.Text))
             {
-                var search = SearchBox.Text.Split();
-                list = list.Where(x =>
-                    x.Lastname.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Firstname.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Patronymic!.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Email!.ToLower().Contains(SearchBox.Text.ToLower()) ||
-                    x.Phone.ToLower().Contains(SearchBox.Text.ToLower()))
-                    .ToList();
+                string[] searchTerms = SearchBox.Text.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                if (list.Count == 0)
+                list = list.Where(client =>
                 {
-                    ClientListBox.ItemsSource = null;
-                }
-            }
-            else
-            {
-                list = temp;
+                    string[] clientFields = 
+                    [
+                        client.Firstname.ToLower(),
+                        client.Lastname.ToLower(),
+                        client.Patronymic!.ToLower(),
+                        client.Email!.ToLower(),
+                        client.Phone!.ToLower(),
+                    ];
+                    return searchTerms.Any(term => clientFields.Any(field => field.Contains(term)));
+                })
+                .OrderByDescending(client =>
+                {
+                    string[] clientFields = 
+                    [
+                        client.Firstname.ToLower(),
+                        client.Lastname.ToLower(),
+                        client.Patronymic!.ToLower(),
+                        client.Email!.ToLower(),
+                        client.Phone!.ToLower(),
+                    ];
+                    return searchTerms.Any(term => clientFields.Any(field => field.Contains(term)));
+                }).ToList();
             }
 
             UpdateDisplayedClient(list);
